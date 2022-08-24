@@ -14,11 +14,15 @@ inputs:
 outputs:
   - name: blueprint-output
     value: $module.terraform_module2.outputs.nested_complex
+settings:
+  - name: TF_VERSION
+    value: 1.0    
 modules:
   - name: terraform_module1
+    module_type: terraform
     source:
+      source_type: github
       git: 
-        source_type: github
         git_repo_url: "https://github.com/Cloud-Schematics/blueprint-example-modules/tree/main/tf-inputs-outputs"
         git_branch: "main"
     inputs:
@@ -54,9 +58,10 @@ modules:
       - name: test_tuple
 
   - name: terraform_module2
+    module_type: terraform
     source:
+      source_type: github
       git: 
-        source_type: github
         git_repo_url: "https://github.com/Cloud-Schematics/blueprint-example-modules/tree/main/tf-inputs-outputs"
         git_branch: "main"
     inputs:
@@ -80,7 +85,7 @@ modules:
         type: list(any)
 
       - name: docker_ports
-        value: $workitem.terraform_module1.nested_complex
+        value: $module.terraform_module1.nested_complex
         type: |
           list(object({
             internal = number
